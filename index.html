@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1659a7">
+<title>役員行動費かんたん入力</title>
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{--blue:#1659a7;--blue2:#eaf3ff;--red:#b42318;--green:#16794a;--gray:#667085;--line:#d0d5dd;--bg:#f6f8fb;--card:#fff;--shadow:0 3px 14px rgba(16,24,40,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;background:var(--bg);color:#101828;font-size:18px}
+header{position:sticky;top:0;z-index:20;background:var(--blue);color:white;padding:14px 16px 12px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+header h1{font-size:23px;margin:0;text-align:center}header .sub{font-size:14px;text-align:center;opacity:.9;margin-top:4px}
+main{max-width:760px;margin:auto;padding:16px 14px 96px}.card{background:var(--card);border-radius:16px;padding:18px;margin:0 0 16px;box-shadow:var(--shadow)}
+h2{font-size:23px;margin:0 0 14px}h3{font-size:19px;margin:18px 0 8px}.notice{background:#fff8e7;border:1px solid #f1d58a;padding:12px;border-radius:12px;font-size:15px;line-height:1.55}
+label{display:block;font-weight:700;margin:14px 0 7px}.req{color:var(--red);font-size:14px;margin-left:5px}input,select,textarea{width:100%;font-size:22px;min-height:54px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:white;color:#101828}textarea{min-height:116px;resize:vertical;line-height:1.45}input:focus,select:focus,textarea:focus{outline:4px solid rgba(22,89,167,.18);border-color:var(--blue)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.summary{background:var(--blue2);border:1px solid #b7d5fb;padding:14px;border-radius:12px;line-height:1.7}.summary strong{font-size:24px}
+button,.btn{display:block;width:100%;min-height:56px;border:0;border-radius:13px;font-size:20px;font-weight:800;padding:12px 14px;cursor:pointer;text-align:center;text-decoration:none}.primary{background:var(--blue);color:#fff}.secondary{background:#eef2f6;color:#1d2939}.danger{background:#fee4e2;color:#912018}.green{background:var(--green);color:#fff}.outline{background:white;border:2px solid var(--blue);color:var(--blue)}.small{min-height:44px;font-size:16px;padding:8px 10px}.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:30;background:white;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 10px rgba(0,0,0,.08)}nav button{border-radius:0;background:white;color:#475467;font-size:13px;min-height:68px;padding:7px 2px}nav button span{display:block;font-size:25px;line-height:1.1;margin-bottom:3px}nav button.active{color:var(--blue);background:var(--blue2)}
+.section{display:none}.section.active{display:block}.record{border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;background:#fff}.record .date{font-weight:900;font-size:21px;color:var(--blue)}.record .meta{color:#475467;font-size:16px;line-height:1.55;margin-top:5px}.record .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.pill{display:inline-block;border-radius:999px;padding:3px 9px;background:#eef2f6;font-size:14px;margin-left:5px}.locked{background:#ecfdf3;color:#067647}.empty{text-align:center;color:#667085;padding:28px 10px}.hidden{display:none!important}.error{color:var(--red);font-weight:700;margin-top:10px}.muted{color:#667085;font-size:15px;line-height:1.55}.bigselect{font-size:24px;font-weight:700}.topstatus{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:15px;margin-bottom:10px}.topstatus b{font-size:18px}.badge{padding:5px 9px;border-radius:10px;background:#eef2f6}
+.time-display{background:#fff;border:2px solid var(--line);color:#101828;text-align:left;font-size:24px;font-weight:800;padding:12px 14px}.time-display.has-value{border-color:var(--blue);background:var(--blue2);color:var(--blue)}
+.time-modal{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;justify-content:center;background:rgba(16,24,40,.55);padding:12px}.time-modal.open{display:flex}.time-sheet{width:min(100%,520px);background:white;border-radius:20px 20px 12px 12px;padding:20px;box-shadow:0 -8px 30px rgba(0,0,0,.22)}.time-sheet h2{text-align:center;margin-bottom:16px}.time-selects{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}.time-selects select{font-size:30px;font-weight:800;text-align:center;min-height:68px}.time-colon{font-size:32px;font-weight:900}.time-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.time-help{text-align:center;color:#667085;font-size:15px;margin-top:10px}
+@media(max-width:430px){body{font-size:17px}.grid2{grid-template-columns:1fr}.grid3{grid-template-columns:1fr 1fr}main{padding-left:10px;padding-right:10px}.card{padding:15px}.btnrow{grid-template-columns:1fr}}
+@media print{header,nav,.no-print{display:none!important}body{background:white}main{padding:0;max-width:none}.card{box-shadow:none;border-radius:0;margin:0;padding:0}}
+</style>
+</head>
+<body>
+<header><h1>役員行動費かんたん入力</h1><div class="sub" id="headerSub">端末内だけに保存されます</div></header>
+<main>
+<section id="sec-input" class="section active">
+  <div class="card">
+    <div class="topstatus"><div><b id="periodText">対象期間</b></div><div id="lockBadge" class="badge">未確定</div></div>
+    <h2 id="formTitle">行動内容を入力</h2>
+    <input type="hidden" id="editId">
+    <label>実施日<span class="req">必須</span></label><input id="date" type="date">
+    <div class="grid2">
+      <div><label>開始時刻<span class="req">必須</span></label><input id="start" type="hidden"><button type="button" class="time-display" id="startPicker">開始時刻を選ぶ</button></div>
+      <div><label>終了時刻<span class="req">必須</span></label><input id="end" type="hidden"><button type="button" class="time-display" id="endPicker">終了時刻を選ぶ</button></div>
+    </div>
+    <label>実施場所<span class="req">必須</span></label><input id="place" type="text" list="placeOptions" placeholder="候補から選ぶか、直接入力してください"><datalist id="placeOptions"></datalist>
+    <label>主な実施内容<span class="req">必須</span></label><input id="details" type="text" list="detailsOptions" placeholder="候補から選ぶか、直接入力してください"><datalist id="detailsOptions"><option value="理事会"></option><option value="月例会"></option><option value="拡大委員会"></option><option value="監査"></option><option value="中間監査"></option><option value="連合会監査"></option><option value="県協監査"></option><option value="期限更新"></option><option value="県教理事会"></option><option value="全個協理事会"></option><option value="全個協代議員会"></option><option value="全国連合会"></option><option value="関東支部"></option><option value="入会者面接"></option><option value="譲渡譲受立会"></option><option value="運行管理者講習会"></option><option value="支局挨拶"></option><option value="警察署挨拶"></option><option value="仕事始め"></option><option value="仕事納め"></option></datalist>
+    <div id="officerFields">
+      <div class="grid2"><div><label>交通費回数</label><input id="transportCount" type="number" min="0" step="1" value="1"></div><div><label>その他請求額</label><input id="extraClaim" type="number" min="0" step="1" value="0"></div></div>
+    </div>
+    <label>備考</label><textarea id="notes" placeholder="必要な場合だけ入力"></textarea>
+    <div id="calcPreview" class="summary" style="margin-top:16px"></div>
+    <div id="formError" class="error"></div>
+    <div class="btnrow"><button class="primary" id="saveBtn">この内容を保存</button><button class="secondary" id="clearBtn">入力を消す</button></div>
+  </div>
+  <div class="notice">保存後はもちろん、20日締めで確定した後も、一覧画面から修正・削除できます。修正後はPDFを作り直して送信してください。</div>
+</section>
+
+<section id="sec-list" class="section">
+  <div class="card"><h2>入力済み一覧・修正</h2><div id="listPeriod"></div><div id="recordList"></div></div>
+</section>
+
+<section id="sec-submit" class="section">
+  <div class="card">
+    <h2>締め・PDF送信</h2>
+    <div id="submitSummary" class="summary"></div>
+    <h3>1. 内容を確認</h3><button class="outline" id="previewPdfBtn">PDFをダウンロード（確認用）</button>
+    <h3>2. 20日締めで確定</h3><button class="green" id="finalizeBtn">この期間を確定する</button>
+    <button class="danger hidden" id="unlockBtn" style="margin-top:10px">確定を取り消して修正する</button>
+    <h3>3. 組合へ送信</h3><button class="primary" id="shareBtn">PDFをダウンロードしてメールを作成</button>
+    <p class="muted">PDFを端末へダウンロードした後、設定した「組合担当者メールアドレス」を宛先にしたメール作成画面を開きます。差出人は各自のメールアプリのアカウントが自動で入ります。ダウンロードしたPDFをメールに添付して送信してください。</p>
+    <hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
+    <h2>全役員集計表</h2>
+    <p class="muted">各役員から受け取ったバックアップJSONをまとめて読み込むと、当月20日締めの全役員集計表をA4横PDFで作成できます。集計担当者向けの機能です。</p>
+    <label class="btn secondary">役員バックアップを追加読み込み<input id="aggregateInput" type="file" accept="application/json" multiple hidden></label>
+    <div id="aggregateStatus" class="summary" style="margin-top:12px">読み込み済み：0名</div>
+    <div class="btnrow"><button class="outline" id="aggregatePdfBtn">全役員集計表PDFをダウンロード</button><button class="danger" id="clearAggregateBtn">読み込みをクリア</button></div>
+  </div>
+</section>
+
+<section id="sec-settings" class="section">
+  <div class="card">
+    <h2>利用者設定</h2>
+    <label>氏名<span class="req">必須</span></label><input id="setName" type="text" placeholder="氏名">
+    <label>組合担当者メールアドレス</label><input id="setEmail" type="email" placeholder="例：account@example.jp">
+    <div class="grid2"><div><label>理事長名</label><input id="setChairman" type="text" placeholder="理事長氏名"></div><div><label>経理部長名</label><input id="setAccounting" type="text" placeholder="経理部長氏名"></div></div>
+    <div class="grid2"><div><label>時間単価（円）</label><input id="setHourly" type="number" value="2000"></div><div><label>交通費単価（円／回）</label><input id="setTransport" type="number" value="1000"></div></div>
+    <div class="grid2"><div><label>源泉税（円／月）</label><input id="setTax" type="number" value="0"></div><div><label>通信費（円／月）</label><input id="setComm" type="number" value="0"></div></div>
+    <button class="primary" id="saveSettings" style="margin-top:16px">設定を保存</button>
+    <h3>データの保管</h3><button class="secondary" id="backupBtn">バックアップを書き出す</button><label class="btn secondary" style="margin-top:10px">バックアップを読み込む<input id="restoreInput" type="file" accept="application/json" hidden></label>
+    <p class="muted">データはこのスマートフォンのブラウザ内にだけ保存され、外部サーバーには送信しません。ブラウザのデータ消去や機種変更に備え、定期的にバックアップしてください。</p>
+  </div>
+</section>
+</main>
+<div id="timeModal" class="time-modal" role="dialog" aria-modal="true" aria-labelledby="timeModalTitle">
+  <div class="time-sheet">
+    <h2 id="timeModalTitle">時刻を選択</h2>
+    <div class="time-selects">
+      <select id="timeHour" aria-label="時"></select><div class="time-colon">:</div><select id="timeMinute" aria-label="分"></select>
+    </div>
+    <div class="time-actions"><button type="button" class="secondary" id="timeCancel">戻る</button><button type="button" class="primary" id="timeConfirm">この時刻に決定</button></div>
+    <div class="time-help">時と分を選び、「この時刻に決定」を押してください。</div>
+  </div>
+</div>
+<nav class="no-print">
+<button data-sec="input" class="active"><span>✍️</span>入力</button><button data-sec="list"><span>📝</span>一覧・修正</button><button data-sec="submit"><span>📄</span>締め・送信</button><button data-sec="settings"><span>⚙️</span>設定</button>
+</nav>
+<script>
+const $=id=>document.getElementById(id);
+const STORE='actionExpensePwaV1';
+const state=load();
+function load(){
+ try{
+  const x=JSON.parse(localStorage.getItem(STORE))||defaultState();
+  x.profile=x.profile||{};x.profile.role='officer';
+  if(x.profile.chairman===undefined)x.profile.chairman='';
+  if(x.profile.accounting===undefined)x.profile.accounting='';
+  if(!Array.isArray(x.aggregateImports))x.aggregateImports=[];
+  x.appVersion=3;localStorage.setItem(STORE,JSON.stringify(x));return x;
+ }catch{return defaultState()}
+}
+function defaultState(){return{appVersion:3,profile:{name:'',role:'officer',email:'',chairman:'',accounting:'',hourly:2000,transport:1000,tax:0,comm:0},records:[],finalized:{},aggregateImports:[]}}
+function persist(){localStorage.setItem(STORE,JSON.stringify(state))}
+function yen(n){return Math.round(Number(n)||0).toLocaleString('ja-JP')+'円'}
+function minsBetween(s,e){if(!s||!e)return 0;let[a,b]=s.split(':').map(Number),[c,d]=e.split(':').map(Number);let m=(c*60+d)-(a*60+b);if(m<0)m+=1440;return m}
+function periodForDate(ds){const d=ds?new Date(ds+'T12:00:00'):new Date();let y=d.getFullYear(),m=d.getMonth();if(d.getDate()>20){m++;if(m>11){m=0;y++}}const end=new Date(y,m,20,12);const start=new Date(y,m-1,21,12);return{key:`${y}-${String(m+1).padStart(2,'0')}`,start,end,label:`${start.getFullYear()}年${start.getMonth()+1}月21日～${end.getFullYear()}年${end.getMonth()+1}月20日`}}
+function currentPeriod(){return periodForDate(new Date().toISOString().slice(0,10))}
+function inPeriod(r,p){const d=new Date(r.date+'T12:00:00');return d>=p.start&&d<=p.end}
+function roleLabel(){return '役員'}
+const PLACE_LISTS=['組合事務所','県協会事務所','西部個人事務所','個人タクシー会館','千葉運輸支局','松戸運動公園','八千代市民会館','松戸駅','柏駅','松戸警察署','柏警察署','六実支所'];
+function updatePlaceOptions(){$('placeOptions').innerHTML=PLACE_LISTS.map(v=>`<option value="${v}"></option>`).join('')}
+function calc(r){const min=minsBetween(r.start,r.end);const hours=min/60;const action=Math.round(hours*(Number(state.profile.hourly)||0));const trans=(Number(r.transportCount)||0)*(Number(state.profile.transport)||0);const extra=Number(r.extraClaim)||0;return{min,hours,action,trans,extra,total:action+trans+extra}}
+function fmtDate(ds){const d=new Date(ds+'T12:00:00');return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`}
+let activeTimeField='start';
+function setupTimePicker(){
+ const h=$('timeHour'),m=$('timeMinute');
+ h.innerHTML=Array.from({length:24},(_,i)=>`<option value="${String(i).padStart(2,'0')}">${i}時</option>`).join('');
+ m.innerHTML=Array.from({length:12},(_,i)=>{const v=String(i*5).padStart(2,'0');return `<option value="${v}">${i*5}分</option>`}).join('');
+ $('startPicker').onclick=()=>openTimePicker('start');$('endPicker').onclick=()=>openTimePicker('end');
+ $('timeCancel').onclick=closeTimePicker;$('timeConfirm').onclick=confirmTimePicker;
+ $('timeModal').onclick=e=>{if(e.target===$('timeModal'))closeTimePicker()};
+}
+function openTimePicker(field){activeTimeField=field;const v=$(field).value||((field==='start')?'09:00':'10:00');const [hh,mm]=v.split(':');$('timeHour').value=hh;$('timeMinute').value=String(Math.round(Number(mm)/5)*5%60).padStart(2,'0');$('timeModalTitle').textContent=field==='start'?'開始時刻を選択':'終了時刻を選択';$('timeModal').classList.add('open')}
+function closeTimePicker(){$('timeModal').classList.remove('open')}
+function confirmTimePicker(){const v=`${$('timeHour').value}:${$('timeMinute').value}`;$(activeTimeField).value=v;updateTimeButtons();updateCalc();closeTimePicker()}
+function updateTimeButtons(){for(const f of ['start','end']){const b=$(f+'Picker'),v=$(f).value;b.textContent=v?`${v} に設定済み`:(f==='start'?'開始時刻を選ぶ':'終了時刻を選ぶ');b.classList.toggle('has-value',!!v)}}
+function init(){
+  const p=state.profile;$('setName').value=p.name;$('setEmail').value=p.email;$('setChairman').value=p.chairman||'';$('setAccounting').value=p.accounting||'';$('setHourly').value=p.hourly;$('setTransport').value=p.transport;$('setTax').value=p.tax;$('setComm').value=p.comm;
+  $('date').value=new Date().toISOString().slice(0,10); setupTimePicker(); bind(); updatePlaceOptions(); refreshAll(); if(!p.name)showSec('settings');
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+}
+function bind(){
+ document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>showSec(b.dataset.sec));
+ ['date','transportCount','extraClaim'].forEach(id=>$(id).addEventListener('input',updateCalc));
+ $('saveBtn').onclick=saveRecord;$('clearBtn').onclick=clearForm;$('saveSettings').onclick=saveSettings;
+ $('finalizeBtn').onclick=finalize;$('unlockBtn').onclick=unlockPeriod;$('previewPdfBtn').onclick=()=>generateAndHandle(false);$('shareBtn').onclick=()=>generateAndHandle(true);
+ $('backupBtn').onclick=backup;$('restoreInput').onchange=restore;$('aggregateInput').onchange=importAggregateFiles;$('aggregatePdfBtn').onclick=downloadAggregatePdf;$('clearAggregateBtn').onclick=clearAggregateImports;
+}
+function showSec(name){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));$('sec-'+name).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.sec===name));refreshAll();window.scrollTo(0,0)}
+function refreshAll(){const p=currentPeriod();$('periodText').textContent=p.label;$('listPeriod').textContent=p.label;$('headerSub').textContent=`${state.profile.name||'氏名未設定'}・役員専用／端末内保存`;
+ const locked=!!state.finalized[p.key];$('lockBadge').textContent=locked?'確定済み（修正可）':'未確定';$('lockBadge').className='badge '+(locked?'locked':'');$('saveBtn').disabled=false;$('saveBtn').style.opacity=1;
+ $('officerFields').classList.remove('hidden');renderList();renderSubmit();renderAggregateStatus();updateTimeButtons();updateCalc();}
+function updateCalc(){const r={start:$('start').value,end:$('end').value,transportCount:$('transportCount').value,extraClaim:$('extraClaim').value};const c=calc(r);$('calcPreview').innerHTML=`行動時間：<strong>${Math.floor(c.min/60)}時間${c.min%60}分</strong><br>概算：${yen(c.total)}`}
+function clearForm(){['editId','start','end','place','details','notes'].forEach(id=>$(id).value='');$('transportCount').value=1;$('extraClaim').value=0;$('date').value=new Date().toISOString().slice(0,10);$('formTitle').textContent='行動内容を入力';$('saveBtn').textContent='この内容を保存';$('formError').textContent='';updateTimeButtons();updateCalc()}
+function saveRecord(){const r={id:$('editId').value||crypto.randomUUID(),date:$('date').value,start:$('start').value,end:$('end').value,place:$('place').value.trim(),details:$('details').value.trim(),transportCount:Number($('transportCount').value)||0,extraClaim:Number($('extraClaim').value)||0,notes:$('notes').value.trim(),updatedAt:new Date().toISOString()};
+ if(!r.date||!r.start||!r.end||!r.place||!r.details){$('formError').textContent='実施日、開始・終了時刻、実施場所、実施内容を入力してください。';return}
+ const i=state.records.findIndex(x=>x.id===r.id);if(i>=0)state.records[i]=r;else state.records.push(r);persist();alert(i>=0?'修正内容を保存しました。':'保存しました。');clearForm();refreshAll();}
+function renderList(){const p=currentPeriod(),arr=state.records.filter(r=>inPeriod(r,p)).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start));const el=$('recordList');if(!arr.length){el.innerHTML='<div class="empty">この期間の入力はまだありません。</div>';return}el.innerHTML=arr.map(r=>{const c=calc(r);return `<div class="record"><div class="date">${fmtDate(r.date)} <span class="pill">${r.start}～${r.end}</span></div><div class="meta">${esc(r.place)}<br>${esc(r.details)}<br>行動時間 ${Math.floor(c.min/60)}時間${c.min%60}分／${yen(c.total)}</div><div class="actions"><button class="outline small" onclick="editRecord('${r.id}')">修正する</button><button class="danger small" onclick="deleteRecord('${r.id}')">削除する</button></div></div>`}).join('')}
+window.editRecord=id=>{const r=state.records.find(x=>x.id===id);if(!r)return;for(const k of ['date','start','end','place','details','transportCount','extraClaim','notes'])$(k).value=r[k]??'';$('editId').value=r.id;$('formTitle').textContent='入力内容を修正';$('saveBtn').textContent='修正内容を保存';showSec('input');updateTimeButtons();updateCalc()}
+window.deleteRecord=id=>{const r=state.records.find(x=>x.id===id);if(!r)return;if(confirm('このデータを削除しますか？')){state.records=state.records.filter(x=>x.id!==id);persist();refreshAll()}}
+function totals(p=currentPeriod()){const arr=state.records.filter(r=>inPeriod(r,p));let min=0,action=0,trans=0,extra=0;arr.forEach(r=>{const c=calc(r);min+=c.min;action+=c.action;trans+=c.trans;extra+=c.extra});const total=action+trans+extra-(Number(state.profile.tax)||0)+(Number(state.profile.comm)||0);return{arr,min,action,trans,extra,total}}
+function renderSubmit(){const p=currentPeriod(),t=totals(p),locked=!!state.finalized[p.key];$('submitSummary').innerHTML=`対象：${p.label}<br>入力件数：<strong>${t.arr.length}件</strong><br>合計時間：<strong>${Math.floor(t.min/60)}時間${t.min%60}分</strong><br>支給額合計：<strong>${yen(t.total)}</strong>${locked?'<br><span class="muted">確定後も修正できます。修正後はPDFを再作成してください。</span>':''}`;$('finalizeBtn').classList.toggle('hidden',locked);$('unlockBtn').classList.toggle('hidden',!locked);$('shareBtn').disabled=!locked;$('shareBtn').style.opacity=locked?1:.45}
+function saveSettings(){const name=$('setName').value.trim();if(!name)return alert('氏名を入力してください。');state.profile={name,role:'officer',email:$('setEmail').value.trim(),chairman:$('setChairman').value.trim(),accounting:$('setAccounting').value.trim(),hourly:Number($('setHourly').value)||0,transport:Number($('setTransport').value)||0,tax:Number($('setTax').value)||0,comm:Number($('setComm').value)||0};state.appVersion=3;persist();updatePlaceOptions();alert('設定を保存しました。');refreshAll();showSec('input')}
+function finalize(){const p=currentPeriod(),t=totals(p);if(!t.arr.length)return alert('入力データがありません。');if(confirm('この期間を確定しますか？\n確定後も入力内容は修正できます。修正した場合はPDFを作り直してください。')){state.finalized[p.key]=new Date().toISOString();persist();refreshAll();alert('確定しました。PDFを送信できます。')}}
+function unlockPeriod(){const p=currentPeriod();if(confirm('確定を取り消して修正可能に戻しますか？')){delete state.finalized[p.key];persist();refreshAll()}}
+function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function backup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});downloadBlob(blob,`役員行動費バックアップ_${state.profile.name||'氏名未設定'}_${new Date().toISOString().slice(0,10)}.json`)}
+function restore(e){const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{const x=JSON.parse(fr.result);if(!x.profile||!Array.isArray(x.records))throw 0;if(confirm('現在のデータをバックアップ内容で置き換えますか？')){Object.assign(state,x);persist();location.reload()}}catch{alert('正しいバックアップファイルではありません。')}};fr.readAsText(f)}
+function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+
+// ----- Canvas drawing and minimal PDF writer -----
+function jpFont(ctx,size,bold=false){ctx.font=`${bold?'700':'400'} ${size}px -apple-system,BlinkMacSystemFont,"Yu Gothic",Meiryo,sans-serif`;ctx.fillStyle='#000';ctx.textBaseline='middle'}
+function line(ctx,x1,y1,x2,y2,w=2){ctx.lineWidth=w;ctx.strokeStyle='#000';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()}
+function rect(ctx,x,y,w,h,lw=2){ctx.lineWidth=lw;ctx.strokeStyle='#000';ctx.strokeRect(x,y,w,h)}
+function txt(ctx,s,x,y,size=22,align='left',bold=false,maxWidth){jpFont(ctx,size,bold);ctx.textAlign=align;ctx.fillText(String(s??''),x,y,maxWidth)}
+function wrap(ctx,s,x,y,maxW,lineH,size=20,maxLines=99){jpFont(ctx,size);ctx.textAlign='left';const chars=[...String(s||'')];let lineStr='',lines=[];for(const ch of chars){const t=lineStr+ch;if(ctx.measureText(t).width>maxW&&lineStr){lines.push(lineStr);lineStr=ch}else lineStr=t}if(lineStr)lines.push(lineStr);lines.slice(0,maxLines).forEach((l,i)=>ctx.fillText(l,x,y+i*lineH,maxW));}
+function makeCanvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.fillStyle='white';x.fillRect(0,0,w,h);return[c,x]}
+function officerCanvas(p){const W=1240,H=1754,[c,x]=makeCanvas(W,H);const L=75,R=1165,top=105;txt(x,'役員行動費請求書兼日別明細書',W/2,55,38,'center',true);txt(x,'千葉県東葛個人タクシー協同組合',85,100,22);txt(x,'理事氏名',525,100,22);txt(x,state.profile.name,650,100,24,'left',true,260);txt(x,`理事長　${state.profile.chairman||''}　印`,930,55,18);txt(x,`経理部長　${state.profile.accounting||''}　印`,930,95,18);
+ const cols=[L,155,325,455,900,1015,R];const rowH=43;line(x,L,120,R,120,4);line(x,L,165,R,165,4);['月/日','行 動 時 間','場所等','主 な 実 施 内 容','請求','備 考 欄'].forEach((h,i)=>txt(x,h,(cols[i]+cols[i+1])/2,143,20,'center',true));for(const xx of cols)line(x,xx,120,xx,165+31*rowH,2);
+ const all=[];for(let d=new Date(p.start);d<=p.end;d.setDate(d.getDate()+1))all.push(new Date(d));const recs=state.records.filter(r=>inPeriod(r,p));
+ all.forEach((d,i)=>{const y=165+i*rowH;line(x,L,y,R,y,1.5);const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;const arr=recs.filter(r=>r.date===ds);txt(x,i===11?`/${d.getMonth()+1}`:d.getDate(),(cols[0]+cols[1])/2,y+rowH/2,18,'center');if(arr.length){const starts=arr.map(r=>r.start),ends=arr.map(r=>r.end);txt(x,`${starts[0]} ～ ${ends[ends.length-1]}`,(cols[1]+cols[2])/2,y+rowH/2,17,'center');txt(x,arr.map(r=>r.place).join('／'),cols[2]+6,y+rowH/2,16,'left',false,cols[3]-cols[2]-12);txt(x,arr.map(r=>r.details).join('／'),cols[3]+6,y+rowH/2,15,'left',false,cols[4]-cols[3]-12);txt(x,yen(arr.reduce((s,r)=>s+calc(r).total,0)).replace('円',''),(cols[4]+cols[5])/2,y+rowH/2,16,'center');txt(x,arr.map(r=>r.notes).join('／'),cols[5]+5,y+rowH/2,14,'left',false,cols[6]-cols[5]-10)}});line(x,L,165+31*rowH,R,165+31*rowH,4);
+ const sy=165+31*rowH, t=totals(p);const summaryW=650;rect(x,L,sy,summaryW,90,3);txt(x,`行動日数（${new Set(t.arr.map(r=>r.date)).size}）日`,L+15,sy+27,18);txt(x,`月間行動時間の合計（${Math.floor(t.min/60)}時間${t.min%60}分）× ${yen(state.profile.hourly)}`,L+165,sy+27,17,'left',false,summaryW-180);txt(x,`月間交通費の合計（${t.arr.reduce((s,r)=>s+(Number(r.transportCount)||0),0)}）回 × ${yen(state.profile.transport)}`,L+165,sy+68,17,'left',false,summaryW-180);
+ const bx=760,bw=405,bh=48;[['行動費請求額',t.action+t.extra],['交　通　費',t.trans],['源　泉　税',-(Number(state.profile.tax)||0)],['通　信　費',Number(state.profile.comm)||0],['支給額合計',t.total]].forEach((a,i)=>{rect(x,bx,sy+i*bh,bw,bh,2);line(x,bx+245,sy+i*bh,bx+245,sy+(i+1)*bh,2);txt(x,a[0],bx+15,sy+i*bh+bh/2,20,'left',i===4);txt(x,'￥'+Math.round(a[1]).toLocaleString('ja-JP'),bx+bw-15,sy+i*bh+bh/2,20,'right',i===4)});
+ txt(x,'※ 注意事項　この請求書は、理事のみ使用する。',L,sy+125,18);txt(x,'提出期限までに必ず提出して理事長の検印を受け、',L+40,sy+158,15);txt(x,'総務部又は会計にお持ちください。',L+40,sy+186,15);txt(x,'提出期限は、毎月20日～21日迄とする。',L+40,sy+218,16);return c}
+function canvasToJpegBytes(c){const data=c.toDataURL('image/jpeg',.94).split(',')[1];const bin=atob(data),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u}
+function pdfFromCanvases(canvases,pageSize){const enc=new TextEncoder(),chunks=[],offsets=[0];let len=0;const push=b=>{if(typeof b==='string')b=enc.encode(b);chunks.push(b);len+=b.length};push('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');const objs=[];const add=(parts)=>objs.push(parts);const pageIds=[],imgIds=[];let next=3;canvases.forEach(()=>{pageIds.push(next++);imgIds.push(next++)});const pagesId=2,catalogId=1;add([`<< /Type /Catalog /Pages ${pagesId} 0 R >>`]);add([`<< /Type /Pages /Count ${canvases.length} /Kids [${pageIds.map(i=>i+' 0 R').join(' ')}] >>`]);
+ canvases.forEach((c,i)=>{const [pw,ph]=pageSize;add([`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pw} ${ph}] /Resources << /XObject << /Im${i} ${imgIds[i]} 0 R >> >> /Contents ${next} 0 R >>`]);const jpg=canvasToJpegBytes(c);add([`<< /Type /XObject /Subtype /Image /Width ${c.width} /Height ${c.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`,jpg,'\nendstream']);const content=`q\n${pw} 0 0 ${ph} 0 0 cm\n/Im${i} Do\nQ\n`;add([`<< /Length ${enc.encode(content).length} >>\nstream\n${content}endstream`]);next++});
+ objs.forEach((parts,idx)=>{offsets[idx+1]=len;push(`${idx+1} 0 obj\n`);parts.forEach(push);push('\nendobj\n')});const xref=len;push(`xref\n0 ${objs.length+1}\n0000000000 65535 f \n`);for(let i=1;i<=objs.length;i++)push(String(offsets[i]).padStart(10,'0')+' 00000 n \n');push(`trailer\n<< /Size ${objs.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);const out=new Uint8Array(len);let pos=0;chunks.forEach(ch=>{out.set(ch,pos);pos+=ch.length});return new Blob([out],{type:'application/pdf'})}
+async function buildPdf(){const p=currentPeriod(),arr=state.records.filter(r=>inPeriod(r,p)).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start));if(!arr.length)throw new Error('入力データがありません。');return pdfFromCanvases([officerCanvas(p)],[595.28,841.89])}
+async function generateAndHandle(sendMail){
+ try{
+  const blob=await buildPdf();
+  const p=currentPeriod();
+  const name=`${state.profile.name}_役員行動費明細_${p.key}.pdf`;
+  downloadBlob(blob,name);
+  if(!sendMail){
+   alert('PDFをダウンロードしました。');
+   return;
+  }
+  const to=(state.profile.email||'').trim();
+  if(!to){
+   alert('PDFをダウンロードしました。\n設定画面で「組合担当者メールアドレス」を入力してください。');
+   showSec('settings');
+   return;
+  }
+  alert('PDFをダウンロードしました。\n続いてメール作成画面を開きます。ダウンロードしたPDFを添付して送信してください。');
+  const subject=`${state.profile.name} ${p.label}分 行動費請求書`;
+  const body=`組合担当者様\r\n\r\n${state.profile.name}の${p.label}分の行動費請求書を送付します。\r\nダウンロードしたPDF「${name}」を添付してください。\r\n\r\nよろしくお願いいたします。`;
+  location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+ }catch(e){
+  alert(e.message||'PDF作成に失敗しました。');
+ }
+}
+
+function profileCalcFor(data,r){const p=data.profile||{};const min=minsBetween(r.start,r.end),action=Math.round((min/60)*(Number(p.hourly)||0)),trans=(Number(r.transportCount)||0)*(Number(p.transport)||0),extra=Number(r.extraClaim)||0;return{min,action,trans,extra,total:action+trans+extra}}
+function aggregateTotals(data,p){const arr=(data.records||[]).filter(r=>inPeriod(r,p));let min=0,action=0,trans=0,extra=0;arr.forEach(r=>{const c=profileCalcFor(data,r);min+=c.min;action+=c.action;trans+=c.trans;extra+=c.extra});const tax=Number(data.profile?.tax)||0,comm=Number(data.profile?.comm)||0;return{name:data.profile?.name||'氏名未設定',days:new Set(arr.map(r=>r.date)).size,count:arr.length,min,action,trans,extra,tax,comm,total:action+trans+extra-tax+comm}}
+function importAggregateFiles(e){const files=[...e.target.files];if(!files.length)return;let done=0,added=0;files.forEach(f=>{const fr=new FileReader();fr.onload=()=>{try{const x=JSON.parse(fr.result);if(!x.profile||!Array.isArray(x.records))throw 0;x.profile.role='officer';const name=x.profile.name||f.name;state.aggregateImports=state.aggregateImports.filter(v=>(v.profile?.name||'')!==name);state.aggregateImports.push(x);added++}catch{}finally{done++;if(done===files.length){persist();renderAggregateStatus();alert(`${added}名分を読み込みました。`);e.target.value=''}}};fr.readAsText(f)})}
+function clearAggregateImports(){if(confirm('読み込んだ全役員集計用データをクリアしますか？')){state.aggregateImports=[];persist();renderAggregateStatus()}}
+function renderAggregateStatus(){const el=$('aggregateStatus');if(!el)return;const p=currentPeriod(),all=[{profile:state.profile,records:state.records},...(state.aggregateImports||[])];const unique=[];const seen=new Set();for(const d of all){const n=d.profile?.name||'';if(!n||seen.has(n))continue;seen.add(n);unique.push(aggregateTotals(d,p))}el.innerHTML=`対象：${p.label}<br>読み込み済み：<strong>${unique.length}名</strong>${unique.length?'<br>'+unique.map(x=>`${esc(x.name)}：${yen(x.total)}`).join('<br>'):''}`}
+function aggregateCanvas(p,rows){const W=1754,H=1240,[c,x]=makeCanvas(W,H);txt(x,'役員行動費　全役員集計表',W/2,60,42,'center',true);txt(x,`対象期間：${p.label}`,80,115,24);txt(x,`理事長　${state.profile.chairman||''}`,1120,85,22);txt(x,`経理部長　${state.profile.accounting||''}`,1120,125,22);const cols=[70,155,440,575,735,930,1125,1310,1485,1685],top=165,rowH=54;const heads=['No.','氏名','行動日数','行動時間','行動費','交通費','その他','源泉税','通信費','支給額合計'];for(let i=0;i<cols.length-1;i++){rect(x,cols[i],top,cols[i+1]-cols[i],rowH,2);txt(x,heads[i],(cols[i]+cols[i+1])/2,top+rowH/2,18,'center',true)}rows.forEach((r,i)=>{const y=top+rowH*(i+1);const vals=[i+1,r.name,r.days,`${Math.floor(r.min/60)}時間${r.min%60}分`,r.action,r.trans,r.extra,-r.tax,r.comm,r.total];for(let j=0;j<cols.length-1;j++){rect(x,cols[j],y,cols[j+1]-cols[j],rowH,1.5);const val=j>=4?'￥'+Math.round(vals[j]).toLocaleString('ja-JP'):vals[j];txt(x,val,j===1?cols[j]+10:(cols[j]+cols[j+1])/2,y+rowH/2,j===1?18:17,j===1?'left':'center',j===9,cols[j+1]-cols[j]-12)}});const sy=top+rowH*(rows.length+1);const sums=rows.reduce((a,r)=>{a.action+=r.action;a.trans+=r.trans;a.extra+=r.extra;a.tax+=r.tax;a.comm+=r.comm;a.total+=r.total;return a},{action:0,trans:0,extra:0,tax:0,comm:0,total:0});rect(x,70,sy,1615,rowH,2);txt(x,'合計',255,sy+rowH/2,20,'center',true);[['行動費',sums.action],['交通費',sums.trans],['その他',sums.extra],['源泉税',-sums.tax],['通信費',sums.comm],['支給額',sums.total]].forEach((a,i)=>txt(x,`${a[0]} ￥${Math.round(a[1]).toLocaleString('ja-JP')}`,520+i*190,sy+rowH/2,17,'center',i===5));txt(x,'※ 各役員の端末から書き出したバックアップデータを、この端末で集計したものです。',75,H-55,18);return c}
+async function downloadAggregatePdf(){const p=currentPeriod(),all=[{profile:state.profile,records:state.records},...(state.aggregateImports||[])],map=new Map();all.forEach(d=>{const n=d.profile?.name||'';if(n)map.set(n,d)});const rows=[...map.values()].map(d=>aggregateTotals(d,p)).filter(r=>r.count>0).sort((a,b)=>a.name.localeCompare(b.name,'ja'));if(!rows.length)return alert('集計対象の役員データがありません。');const blob=pdfFromCanvases([aggregateCanvas(p,rows)],[841.89,595.28]);downloadBlob(blob,`全役員行動費集計表_${p.key}.pdf`);alert('全役員集計表PDFをダウンロードしました。')}
+
+init();
+</script>
+</body></html>
