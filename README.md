@@ -10,7 +10,7 @@ GitHub Pagesで公開する場合は、このリポジトリのルートに以�
 index.html
 manifest.webmanifest
 service-worker.js
-icons/icon.svg
+icon.svg
 ```
 
 ## 注意
@@ -27,5 +27,5 @@ icons/icon.svg
 index.html
 manifest.webmanifest
 service-worker.js
-icons/icon.svg
+icon.svg
 ```
